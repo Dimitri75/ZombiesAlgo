@@ -8,6 +8,14 @@ static double length;
 static int number;
 static Node nodeList[MAX];
 
+struct less_than_key
+{
+	inline bool operator() (const pair<double, pair<int, string>>& pair1, const pair<double, pair<int, string>>& pair2)
+	{
+		return (pair1.first < pair2.first);
+	}
+};
+
 void Question5::proceed(){
 	read();
 	calcDistances();
@@ -15,12 +23,17 @@ void Question5::proceed(){
 	setMatrix();
 	sortMatrix();
 
+	vector<pair<double, pair<int, string>>> paths;
 	for (int i = 1; i < MAX; i++){
-		findNeighbour(i);
+		paths.push_back(findNeighbour(i));
 	}
 
-	cout << endl << "Best path :" << endl;
-	findNeighbour(11);
+	sort(paths.begin(), paths.end(), less_than_key());
+	pair<double, pair<int, string>> shortest = paths.at(0);
+
+	cout << "Best path starts from " << shortest.second.first << endl <<
+	"Path distance is " << shortest.first << endl << endl <<
+	shortest.second.second << endl;
 }
 
 void Question5::read()
@@ -87,7 +100,8 @@ void Question5::sortMatrix()
 		return a.next < b.next; });
 	}
 }
-void Question5::findNeighbour(int city)
+
+pair<double, pair<int, string>> Question5::findNeighbour(int city)
 {
 	int cityCount = getNumber();
 	double length = 0;
@@ -121,16 +135,15 @@ void Question5::findNeighbour(int city)
 	length += oldMatrix[city - 1][0];
 	indexAway++;
 
-	cout << "Path distance : " << length << " from the city " << cityInit << endl;
-	cout << endl << "Path :" << endl;
-
+	stringstream ss;
 	for (int i = 1; i < cityCount; i++){
-		cout << path[i - 1];
+		ss << path[i - 1];
 
 		if (i != cityCount - 1)
-			cout << " -> ";
+			ss << " -> ";
 		else
-			cout << " -> " << cityInit << endl;
+			ss << " -> " << cityInit << endl;
 	}
-	cout << "----------" << endl;
+
+	return pair<double, pair<int, string>>(length, pair<int, string>(cityInit, ss.str()));
 }

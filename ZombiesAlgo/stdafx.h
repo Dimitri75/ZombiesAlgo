@@ -21,7 +21,7 @@
 #include <chrono>
 #include <thread>
 #include <algorithm>
-#include <conio.h>
+#include <sstream>
 
 using namespace std;
 

@@ -42,5 +42,5 @@ private:
 	static void setProblem(Status statusList[]);
 	static void setMatrix();
 	static void sortMatrix();
-	static void findNeighbour(int city);
+	static pair<double, pair<int, string>> findNeighbour(int city);
 };
