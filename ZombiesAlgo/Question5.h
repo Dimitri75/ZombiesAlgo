@@ -30,22 +30,17 @@ typedef struct
 	double next;
 } Distance1;
 
-
-
 class Question5
 {
 public:
-
-
+	static void proceed();
+private:	
 	static void read();
 	static void calcDistances();
 	static double ** getDistanceMatrix();
 	static int getNumber();
-	static void proceed();
 	static void setProblem(Status statusList[]);
 	static void setMatrix();
 	static void sortMatrix();
 	static void findNeighbour(int city);
-private:
-	
 };

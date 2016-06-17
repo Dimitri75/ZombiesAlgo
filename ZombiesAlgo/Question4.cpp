@@ -28,16 +28,15 @@ void Question4::proceed(){
 	routineChangePositions(map, takenPositions, distance);
 }
 
-void Question4::routineChangePositions(map<int, pair<double, int>> map, vector<int>& takenPositions, int distance){
+void Question4::routineChangePositions(map<int, pair<double, int>>& map, vector<int>& takenPositions, int distance){
 	int maxPosition;
 	int hour = 1;
+	string doContinue;
 	vector<int> invalidPositions = takenPositions;
 	vector<int> positionsToErase;
 
-	bool again = wellPosted(map, takenPositions, distance);
-	while (!again) {
+	do {
 		cout << "----- Hour : " << hour << " -----" << endl;
-		++hour;
 
 		// update the positions of the shooters who are below their estimation
 		positionsToErase.clear();
@@ -62,39 +61,38 @@ void Question4::routineChangePositions(map<int, pair<double, int>> map, vector<i
 			invalidPositions.erase(itToErase);
 		}
 		takenPositions = invalidPositions;
-		again = wellPosted(map, takenPositions, distance);
 
 		// 5 seconds represents 1 hour
-		this_thread::sleep_for(std::chrono::seconds(5));
+		this_thread::sleep_for(std::chrono::seconds(1));
 
 		// update variations every 10 hour
-		if (hour % 10 == 0)
+		if (hour % 10 == 0){
 			updateVariations(map);
-	}
+			cout << "Continue ? (y/n) : ";
+			cin >> doContinue;
+			if (doContinue == "n")
+				break;
+		}
+		++hour;
+		
+	} while (true);
 }
 
-void Question4::updateVariations(map<int, pair<double, int>> map){
-	int position, percentageVariation;
+void Question4::updateVariations(map<int, pair<double, int>>& myMap){
+	cout << "-----End of the day : Update variations-----" << endl << endl;
+	int position, percentageVariation, newVariation;
 	double estimation;
-	for (auto it = map.begin(); it != map.end(); ++it){
+	map<int, pair<double, int>> tmpMap = myMap;
+
+	for (auto it = tmpMap.begin(); it != tmpMap.end(); ++it){
 		position = it->first;
 		estimation = it->second.first;
 		percentageVariation = it->second.second;
-		percentageVariation += Utils::getMeteoVariation();
+		newVariation = Utils::getMeteoVariation();
 
-		map[position] = pair<double, int>(estimation, percentageVariation);
+		myMap.erase(myMap.find(position));
+		myMap[position] = pair<double, int>(estimation, newVariation);
 	}
-}
-
-bool Question4::wellPosted(map<int, pair<double, int>> map, vector<int> takenPositions, int distance){
-	int maxPosition;
-	for (auto it = takenPositions.begin(); it != takenPositions.end(); ++it){
-		int percentageVariation = map[*it].second;
-
-		if (percentageVariation < 0)
-			return false;
-	}
-	return true;
 }
 
 int Question4::chooseDistance(){
@@ -107,7 +105,7 @@ int Question4::chooseDistance(){
 	return distance;
 }
 
-int Question4::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>> map, int minDistance, vector<int> takenPositions){
+int Question4::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>>& map, int minDistance, vector<int> takenPositions){
 	pair<int, double> maxPair = pair<int, double>(map.begin()->first, map.begin()->second.first * ((100 + map.begin()->second.second) / 100));
 	int position;
 	double variation, efficiency;
@@ -128,7 +126,7 @@ int Question4::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, in
 	return maxPair.first;
 }
 
-void Question4::updateTower(map<int, pair<double, int>> myMap, map<int, pair<double, int>>::iterator& it){
+void Question4::updateTower(map<int, pair<double, int>>& myMap, map<int, pair<double, int>>::iterator& it){
 	int position;
 	double currentVariation, improvementVariation;
 	double estimation, oldEfficiency, variation;
@@ -146,7 +144,7 @@ void Question4::updateTower(map<int, pair<double, int>> myMap, map<int, pair<dou
 	cout << "Tower at " << position << " is now " << estimation * variation << " (was " << oldEfficiency << ")" << endl;
 }
 
-void Question4::applyVariation(map<int, pair<double, int>> map, double maxPosition){
+void Question4::applyVariation(map<int, pair<double, int>>& map, double maxPosition){
 	if (map[maxPosition].second < 0){
 		auto it = map.find(maxPosition);
 

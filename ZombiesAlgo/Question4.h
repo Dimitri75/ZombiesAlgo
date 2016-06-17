@@ -4,13 +4,13 @@ class Question4
 public:
 	static void proceed();
 private:
-	static int getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>>, int minDistance, vector<int> takenPositions);
+	static int getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>>&, int minDistance, vector<int> takenPositions);
 	static bool isDistanceOk(int position, int minDistance, vector<int> takenPositions);
 	static int chooseDistance();
-	static void applyVariation(map<int, pair<double, int>> map, double max);
-	static void updateTower(map<int, pair<double, int>>, map<int, pair<double, int>>::iterator&);
+	static void applyVariation(map<int, pair<double, int>>& map, double max);
+	static void updateTower(map<int, pair<double, int>>&, map<int, pair<double, int>>::iterator&);
 	static bool wellPosted(map<int, pair<double, int>> map, vector<int> takenPositions, int distance);
-	static void routineChangePositions(map<int, pair<double, int>> map, vector<int>& takenPositions, int distance);
-	static void updateVariations(map<int, pair<double, int>> map);
+	static void routineChangePositions(map<int, pair<double, int>>& map, vector<int>& takenPositions, int distance);
+	static void updateVariations(map<int, pair<double, int>>& map);
 };
 
