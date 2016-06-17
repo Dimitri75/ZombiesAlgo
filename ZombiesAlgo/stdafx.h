@@ -17,6 +17,7 @@
 #include <map>
 #include  <random>
 #include <time.h>
+#include <functional>
 
 using namespace std;
 

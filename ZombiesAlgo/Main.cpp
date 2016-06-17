@@ -3,8 +3,7 @@
 
 #include "stdafx.h"
 
-typedef void(*FPTR)();
-map<int, FPTR> question;
+map<int, function<void()>> question;
 
 void initMapQuestions();
 int chooseQuestion();
