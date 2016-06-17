@@ -2,6 +2,7 @@
 class Utils
 {
 public:
+	static ifstream getFile(string);
 	static ifstream chooseFile();
 	static vector<int> parseFileIntoVector(ifstream&);
 	static map<int, int> parseVectorIntoMap(vector<int>&); 
@@ -12,7 +13,6 @@ public:
 
 private:
 	static map<int, string> getFilesMap();
-	static ifstream getFile(string);
 	static int getMeteoVariation();
 };
 
