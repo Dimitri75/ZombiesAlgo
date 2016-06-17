@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "Question6.h"
 
-const string alphabet = "abcdefghijklmnopqrstuvwxyz";
-
 void Question6::proceed(){
 	/*
 	Vos services de renseignement ont pu déterminer la source du virus. 
@@ -12,7 +10,18 @@ void Question6::proceed(){
 	Il vous est demandé de mettre en place un système qui permettra de sécuriser vos échanges de messages.
 	*/
 
-	// TODO : something
+	string key = "jhgyufzzzzzkyfluyghy";
+
+	string message = "Hello world";
+	cout << "Message : " << message << endl;
+
+	string encryptedMessage = vigenereEncryption(message, key);
+	cout << "Encrypted message : " << encryptedMessage << endl;
+
+	string decryptedMessage = vigenereDecryption(encryptedMessage, key);
+	cout << "Decrypted message : " << decryptedMessage << endl;
+
+	// TODO : perhaps should we do something better than vigenere ? :x
 }
 
 string Question6::vigenereEncryption(string msg, string key)
