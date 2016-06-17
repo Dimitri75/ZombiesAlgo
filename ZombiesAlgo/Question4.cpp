@@ -15,7 +15,6 @@ void Question4::proceed(){
 	map<int, pair<double, int>> map = Utils::parseVectorIntoMapWithMeteo(list);
 
 	int maxPosition;
-	double efficiency;
 	int distance = chooseDistance();
 	vector<int> distances;
 

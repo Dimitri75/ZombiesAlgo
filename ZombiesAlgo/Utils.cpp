@@ -1,16 +1,6 @@
 #include "stdafx.h"
 #include "Utils.h"
 
-
-Utils::Utils()
-{
-}
-
-
-Utils::~Utils()
-{
-}
-
 ifstream Utils::getFile(string fileName){
 	ifstream file("TestFiles/" + fileName, ios::in);
 
@@ -21,35 +11,32 @@ ifstream Utils::getFile(string fileName){
 }
 
 ifstream Utils::chooseFile(){
-	cout << "Choix du fichier\n"
-		<< "1 - T_2_5\n"
-		<< "2 - T_2_10\n"
-		<< "3 - T_3_20\n"
-		<< "4 - T_4_20\n"
-		<< "5 - T_5_30\n"
-		<< "6 - T_7_30\n";
+	map<int, string> filesMap = getFilesMap();
 
 	int choice;
-	cin >> choice;
-	cout << endl;
+	do {
+		cout << "Choose a file" << endl;
+		for (auto it = filesMap.begin(); it != filesMap.end(); ++it){
+			cout << it->first << " - " << it->second << endl;
+		}
 
-	switch (choice)
-	{
-	case 1:
-		return Utils::getFile("T_2_5.txt");
-	case 2:
-		return Utils::getFile("T_2_10.txt");
-	case 3:
-		return Utils::getFile("T_3_20.txt");
-	case 4:
-		return Utils::getFile("T_4_20.txt");
-	case 5:
-		return Utils::getFile("T_5_30.txt");
-	case 6:
-		return Utils::getFile("T_7_30.txt");
-	default:
-		break;
-	}
+		cin >> choice;
+		cout << endl;
+	} while (choice <= 0 || choice > filesMap.size());
+
+	return Utils::getFile(filesMap[choice]);
+}
+
+map<int, string> Utils::getFilesMap(){
+	map<int, string> filesMap;
+	filesMap[1] = "T_2_5.txt";
+	filesMap[2] = "T_2_10.txt";
+	filesMap[3] = "T_3_20.txt";
+	filesMap[4] = "T_4_20.txt";
+	filesMap[5] = "T_5_30.txt";
+	filesMap[6] = "T_7_30.txt";
+
+	return filesMap;
 }
 
 vector<int> Utils::parseFileIntoVector(ifstream& file){
