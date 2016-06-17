@@ -46,7 +46,7 @@ int Question3::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, in
 		if (isDistanceOk(position, minDistance, distances))
 			maxPosition = efficiencyAndVariation.first > map[maxPosition].first ? position : maxPosition;
 	}
-	cout << endl << "Shooter at " << maxPosition << " (" << map[maxPosition].first << ")" << endl;
+	cout << endl << "Shooter at " << maxPosition << " : " << map[maxPosition].first << " (" << map[maxPosition].second << "%)" << endl;
 	applyVariation(map, maxPosition);
 
 	return maxPosition;

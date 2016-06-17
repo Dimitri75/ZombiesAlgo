@@ -12,7 +12,7 @@ void Question4::proceed(){
 	int nbTowers = list.at(0);
 	list.erase(list.begin());
 
-	map<int, pair<double, int>> map = Utils::parseVectorIntoMapWithMeteo(list);
+	map<int, pair<double, int>> map = Utils::parseVectorIntoMapWithMeteoAndKeepEstimation(list);
 
 	int maxPosition;
 	int distance = chooseDistance();
@@ -23,6 +23,7 @@ void Question4::proceed(){
 		distances.push_back(maxPosition);
 		cout << endl;
 	}
+	cout << endl;
 }
 
 int Question4::chooseDistance(){
@@ -36,36 +37,42 @@ int Question4::chooseDistance(){
 }
 
 int Question4::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>> map, int minDistance, vector<int> distances){
-	int maxPosition = map.begin()->first, position;
+	pair<int, double> maxPair = pair<int, double>(map.begin()->first, map.begin()->second.first * ((100 + map.begin()->second.second) / 100));
+	int position;
+	double variation, efficiency;
 
 	for (auto it = map.begin(); it != map.end(); ++it){
 		position = it->first;
-		pair<double, int> efficiencyAndVariation = it->second;
+		pair<int, double> estimationAndVariation = it->second;
+		variation = (100 + estimationAndVariation.second) / 100;
+		efficiency = estimationAndVariation.first * variation;
 
-		if (isDistanceOk(position, minDistance, distances))
-			maxPosition = efficiencyAndVariation.first > map[maxPosition].first ? position : maxPosition;
+		if (isDistanceOk(position, minDistance, distances)){
+			maxPair = efficiency > maxPair.second ? pair<int, double>(position, efficiency) : maxPair;
+		}
 	}
-	cout << endl << "Shooter at " << maxPosition << " (" << map[maxPosition].first << ")" << endl;
-	applyVariation(map, maxPosition);
+	cout << endl << "Shooter at " << maxPair.first << " : " << maxPair.second << " (" << map[maxPair.first].second << "%)" << endl;
+	applyVariation(map, maxPair.first);
 
-	return maxPosition;
+	return maxPair.first;
 }
 
 void Question4::updateTower(map<int, pair<double, int>> myMap, map<int, pair<double, int>>::iterator& it){
 	int position;
 	double currentVariation, improvementVariation;
-	double efficiency, variation;
+	double estimation, oldEfficiency, variation;
 	pair<double, int> efficiencyAndVariation;
 
 	position = it->first;
-	efficiency = it->second.first;
+	estimation = it->second.first;
 	currentVariation = it->second.second;
+	oldEfficiency = estimation * ((100 + currentVariation) / 100);
 
 	improvementVariation = Utils::getImprovementVariation();
 	variation = (currentVariation + improvementVariation + 100) / 100;
 
-	myMap[position] = pair<double, int>(efficiency * variation, currentVariation + improvementVariation);
-	cout << "Tower at " << position << " is now " << efficiency * variation << " (was " << efficiency << ")" << endl;
+	myMap[position] = pair<double, int>(estimation, currentVariation + improvementVariation);
+	cout << "Tower at " << position << " is now " << estimation * variation << " (was " << oldEfficiency << ")" << endl;
 }
 
 void Question4::applyVariation(map<int, pair<double, int>> map, double maxPosition){

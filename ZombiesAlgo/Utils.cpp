@@ -90,6 +90,26 @@ map<int, pair<double, int>> Utils::parseVectorIntoMapWithMeteo(vector<int>& vect
 	return map;
 }
 
+// Return a map< <position, estimation>, <efficiency, variation>>
+map<int, pair<double, int>> Utils::parseVectorIntoMapWithMeteoAndKeepEstimation(vector<int>& vector){
+	map<int, pair<double, int>> map;
+	int position, estimation;
+	double meteoVariation;
+	double variation;
+
+	for (auto it = vector.begin(); it != vector.end(); ++it){
+		meteoVariation = getMeteoVariation();
+		//variation = (100 + meteoVariation) / 100;
+
+		position = *it;
+		estimation = *++it;
+
+		map[position] = pair<double, int>(estimation, meteoVariation);
+	}
+
+	return map;
+}
+
 
 int Utils::random(int max, int min){
 	random_device seeder;
