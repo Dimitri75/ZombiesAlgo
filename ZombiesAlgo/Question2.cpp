@@ -17,7 +17,7 @@ Question2::Question2()
 	map<int, int> map = Utils::parseVectorIntoMap(list);
 
 	int distance = chooseDistance();
-
+	
 	int max;
 	int bestPosition;
 	vector<int> distances;

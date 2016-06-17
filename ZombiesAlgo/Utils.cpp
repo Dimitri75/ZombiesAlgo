@@ -28,10 +28,11 @@ ifstream Utils::chooseFile(){
 		<< "4 - T_4_20\n"
 		<< "5 - T_5_30\n"
 		<< "6 - T_7_30\n";
-	int choice;
 
+	int choice;
 	cin >> choice;
 	cout << endl;
+
 	switch (choice)
 	{
 	case 1:
@@ -69,8 +70,43 @@ map<int, int> Utils::parseVectorIntoMap(vector<int>& vector){
 		efficiency = *++it;
 
 		map[efficiency] = position;
-		cout << position << " (" << efficiency << ") \t";
 	}
 
 	return map;
+}
+
+int Utils::getMeteoVariation(){
+	return Utils::random(30) - 15;
+}
+
+int Utils::getImprovementVariation(){
+	return Utils::random(15);
+}
+
+// Return a map<position, <efficiency, variation>>
+map<int, pair<double, int>> Utils::parseVectorIntoMapWithMeteo(vector<int>& vector){
+	map<int, pair<double, int>> map;
+	int position, efficiency;
+	double meteoVariation;
+	double variation;
+
+	for (auto it = vector.begin(); it != vector.end(); ++it){
+		meteoVariation = getMeteoVariation();
+		variation = (100 + meteoVariation) / 100;
+
+		position = *it;
+		efficiency = *++it;
+
+		map[position] = pair<double, int>(efficiency * variation, meteoVariation);
+	}
+
+	return map;
+}
+
+
+int Utils::random(int max, int min){
+	random_device seeder;
+	mt19937 engine(seeder());
+	uniform_int_distribution<int> dist(min, max);
+	return dist(engine);
 }

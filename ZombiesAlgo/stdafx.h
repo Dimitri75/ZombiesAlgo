@@ -15,13 +15,17 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include  <random>
 
 using namespace std;
 
 #include "Utils.h"
 #include "Question1.h"
 #include "Question2.h"
-
+#include "Question3.h"
+#include "Question4.h"
+#include "Question5.h"
+#include "Question6.h"
 
 
 // TODO: faites référence ici aux en-têtes supplémentaires nécessaires au programme
