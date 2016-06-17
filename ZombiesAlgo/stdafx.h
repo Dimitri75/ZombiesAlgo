@@ -12,8 +12,15 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <map>
 
 using namespace std;
+
+#include "Utils.h"
+#include "Question1.h"
+#include "Question2.h"
 
 
 

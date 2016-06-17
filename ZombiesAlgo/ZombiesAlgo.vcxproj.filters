@@ -16,6 +16,27 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="TestFiles\T_3_20.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="TestFiles\T_4_20.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="TestFiles\T_5_30.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="TestFiles\T_7_30.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="TestFiles\ville.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="TestFiles\T_2_5.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="TestFiles\T_2_10.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -24,12 +45,30 @@
     <ClInclude Include="targetver.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Question1.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Question2.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="ZombiesAlgo.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Question1.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Question2.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
