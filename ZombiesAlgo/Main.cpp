@@ -3,66 +3,56 @@
 
 #include "stdafx.h"
 
-/*typedef Question(*FPTR)();
+typedef void(*FPTR)();
 map<int, FPTR> question;
 
-void initMapQuestions(){
-	question[1] = &Question1();
-	question[2] = &Question2();
-	question[3] = &Question3();
-	question[4] = &Question4();
-	question[5] = &Question5();
-	question[6] = &Question6();
-}
-
-initMapQuestions();
-question[x]();*/
+void initMapQuestions();
+int chooseQuestion();
+void doContinue(string& again);
 
 void _tmain(int argc, _TCHAR* argv[])
 {
-	string quit;
-	int x;
+	string again;
+	int q;
 
+	initMapQuestions();
 	do {
-		cout << "Choix de l'exercice :" << endl
-			<< "1 - Question 1" << endl
-			<< "2 - Question 2" << endl
-			<< "3 - Question 3" << endl
-			<< "4 - Question 4" << endl
-			<< "5 - Question 5" << endl
-			<< "6 - Question 6" << endl;
+		q = chooseQuestion();
+		question[q]();
+		doContinue(again);
+	} while (again != "n");
+}
 
-		cin >> x;
-		cout << endl;
+void initMapQuestions(){
+	question[1] = &Question1::proceed;
+	question[2] = &Question2::proceed;
+	question[3] = &Question3::proceed;
+	question[4] = &Question4::proceed;
+	question[5] = &Question5::proceed;
+	question[6] = &Question6::proceed;
+}
 
-		switch (x)
-		{
-		case 1:
-			Question1();
-			break;
-		case 2:
-			Question2();
-			break;
-		case 3:
-			Question3();
-			break;
-		case 4:
-			Question4();
-			break;
-		case 5:
-			Question5();
-			break;
-		case 6:
-			Question6();
-			break;
-		default:
-			break;
-		}
+int chooseQuestion(){
+	int q;
 
-		cout << endl << "Quit ? (y/n)" << endl;
-		cin >> quit;
-		cout << endl;
-	} while (quit != "y");
+	cout << "Choix de l'exercice :" << endl
+		<< "1 - Question 1" << endl
+		<< "2 - Question 2" << endl
+		<< "3 - Question 3" << endl
+		<< "4 - Question 4" << endl
+		<< "5 - Question 5" << endl
+		<< "6 - Question 6" << endl;
+
+	cin >> q;
+	cout << endl;
+
+	return q;
+}
+
+void doContinue(string& quit){
+	cout << endl << "Continue ? (y/n)" << endl;
+	cin >> quit;
+	cout << endl;
 }
 
 

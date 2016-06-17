@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "Question1.h"
 
-
-Question1::Question1()
-{
+void Question1::proceed(){
 	ifstream file = Utils::chooseFile();
 
 	vector<int> list = Utils::parseFileIntoVector(file);
@@ -24,11 +22,6 @@ Question1::Question1()
 		cout << "Shooter " << i << " at " << bestPosition << " (" << max << ")" << endl;
 		map.erase(max);
 	}
-}
-
-
-Question1::~Question1()
-{
 }
 
 int Question1::getMax(map<int, int> map){

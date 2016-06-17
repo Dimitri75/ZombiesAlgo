@@ -2,8 +2,7 @@
 class Question3
 {
 public:
-	Question3();
-	~Question3();
+	static void proceed();
 	static int getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>>, int minDistance, vector<int> distances);
 	static bool isDistanceOk(int position, int minDistance, vector<int> distances);
 	static int chooseDistance();

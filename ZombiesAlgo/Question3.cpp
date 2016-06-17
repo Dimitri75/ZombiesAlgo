@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "Question3.h"
 
-
-Question3::Question3()
-{
+void Question3::proceed(){
 	ifstream file = Utils::chooseFile();
 
 	vector<int> list = Utils::parseFileIntoVector(file);
@@ -23,14 +21,9 @@ Question3::Question3()
 
 	for (int i = 1; i <= nbShooters; ++i){
 		maxPosition = getMaxInCorrectDistanceAndApplyVariation(map, distance, distances);
-		map.erase(maxPosition);
+		distances.push_back(maxPosition);
 		cout << endl;
 	}
-}
-
-
-Question3::~Question3()
-{
 }
 
 int Question3::chooseDistance(){
@@ -44,7 +37,7 @@ int Question3::chooseDistance(){
 }
 
 int Question3::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>> map, int minDistance, vector<int> distances){
-	int maxPosition, position;
+	int maxPosition = map.begin()->first, position;
 
 	for (auto it = map.begin(); it != map.end(); ++it){
 		position = it->first;
@@ -53,8 +46,7 @@ int Question3::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, in
 		if (isDistanceOk(position, minDistance, distances))
 			maxPosition = efficiencyAndVariation.first > map[maxPosition].first ? position : maxPosition;
 	}
-	distances.push_back(maxPosition);
-	cout << "Shooter at " << maxPosition << " (" << map[maxPosition].first << ")" << endl;
+	cout << endl << "Shooter at " << maxPosition << " (" << map[maxPosition].first << ")" << endl;
 	applyVariation(map, maxPosition);
 
 	return maxPosition;
@@ -83,7 +75,6 @@ void Question3::applyVariation(map<int, pair<double, int>> map, double maxPositi
 
 		updateTower(map, next(it, -1));
 		updateTower(map, next(it, 1));
-		cout << endl;
 	}
 }
 
@@ -91,7 +82,7 @@ bool Question3::isDistanceOk(int position, int minDistance, vector<int> distance
 	for (auto distanceIt = distances.begin(); distanceIt != distances.end(); ++distanceIt){
 		if (position <= *distanceIt && *distanceIt - position < minDistance)
 			return false;
-		else if (position > *distanceIt && position - *distanceIt < minDistance)
+		else if (position >= *distanceIt && position - *distanceIt < minDistance)
 			return false;
 	}
 	return true;

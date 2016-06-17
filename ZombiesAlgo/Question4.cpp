@@ -1,12 +1,6 @@
 #include "stdafx.h"
 #include "Question4.h"
 
+void Question4::proceed(){
 
-Question4::Question4()
-{
-}
-
-
-Question4::~Question4()
-{
 }

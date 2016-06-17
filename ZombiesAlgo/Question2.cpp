@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "Question2.h"
 
-
-Question2::Question2()
-{
+void Question2::proceed(){
 	ifstream file = Utils::chooseFile();
 
 	vector<int> list = Utils::parseFileIntoVector(file);
@@ -17,21 +15,16 @@ Question2::Question2()
 	map<int, int> map = Utils::parseVectorIntoMap(list);
 
 	int distance = chooseDistance();
-	
-	int max;
-	int bestPosition;
+
+	int maxPosition;
+	int efficiency;
 	vector<int> distances;
 	for (int i = 1; i <= nbShooters; ++i){
-		max = getMaxInCorrectDistance(map, distance, distances);
-		bestPosition = map[max];
-		cout << "Shooter " << i << " at " << bestPosition << " (" << max << ")" << endl;
-		map.erase(max);
+		maxPosition = getMaxInCorrectDistance(map, distance, distances);
+		efficiency = map[maxPosition];
+		cout << "Shooter " << i << " at " << maxPosition << " (" << efficiency << ")" << endl;
+		distances.push_back(maxPosition);
 	}
-}
-
-
-Question2::~Question2()
-{
 }
 
 int Question2::chooseDistance(){
@@ -45,27 +38,24 @@ int Question2::chooseDistance(){
 }
 
 int Question2::getMaxInCorrectDistance(map<int, int> map, int minDistance, vector<int> distances){
-	int max = 0, efficiency, position;
-	bool distanceIsOk = false;
+	int maxPosition = map.begin()->first, position, efficiency;
 
 	for (auto it = map.begin(); it != map.end(); ++it){
-		efficiency = it->first;
-		position = it->second;
+		position = it->first;
+		efficiency = it->second;
 
 		if (isDistanceOk(position, minDistance, distances))
-			max = efficiency > max ? efficiency : max;
+			maxPosition = efficiency > map[maxPosition] ? position : maxPosition;
 	}
 
-	distances.push_back(map[max]);
-
-	return max;
+	return maxPosition;
 }
 
 bool Question2::isDistanceOk(int position, int minDistance, vector<int> distances){
 	for (auto distanceIt = distances.begin(); distanceIt != distances.end(); ++distanceIt){
-		if (position <= *distanceIt && *distanceIt - position < minDistance)
+		if (position <= *distanceIt && (*distanceIt - position < minDistance))
 			return false;
-		else if (position > *distanceIt && position - *distanceIt < minDistance)
+		else if (position >= *distanceIt && (position - *distanceIt < minDistance))
 			return false;
 	}
 	return true;

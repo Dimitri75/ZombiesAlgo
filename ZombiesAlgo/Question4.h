@@ -2,7 +2,6 @@
 class Question4
 {
 public:
-	Question4();
-	~Question4();
+	static void proceed();
 };
 

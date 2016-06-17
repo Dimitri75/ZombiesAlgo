@@ -69,7 +69,7 @@ map<int, int> Utils::parseVectorIntoMap(vector<int>& vector){
 		position = *it;
 		efficiency = *++it;
 
-		map[efficiency] = position;
+		map[position] = efficiency;
 	}
 
 	return map;

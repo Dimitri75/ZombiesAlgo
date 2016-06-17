@@ -2,8 +2,7 @@
 class Question1
 {
 public:
-	Question1();
-	~Question1();
+	static void proceed();
 	static int getMax(map<int, int>);
 };
 
