@@ -52,7 +52,7 @@ int Question3::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, in
 	return maxPosition;
 }
 
-void updateTower(map<int, pair<double, int>> myMap, map<int, pair<double, int>>::iterator& it){
+void Question3::updateTower(map<int, pair<double, int>> myMap, map<int, pair<double, int>>::iterator& it){
 	int position;
 	double currentVariation, improvementVariation;
 	double efficiency, variation;
