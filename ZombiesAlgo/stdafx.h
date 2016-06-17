@@ -15,9 +15,13 @@
 #include <fstream>
 #include <vector>
 #include <map>
-#include  <random>
+#include <random>
 #include <time.h>
 #include <functional>
+#include <chrono>
+#include <thread>
+#include <algorithm>
+
 
 using namespace std;
 

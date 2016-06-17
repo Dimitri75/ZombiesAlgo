@@ -9,10 +9,10 @@ public:
 	static map<int, pair<double, int>> parseVectorIntoMapWithMeteo(vector<int>&);
 	static map<int, pair<double, int>> parseVectorIntoMapWithMeteoAndKeepEstimation(vector<int>&);
 	static int random(int max, int min = 0);
+	static int getMeteoVariation();
 	static int getImprovementVariation();
 
 private:
 	static map<int, string> getFilesMap();
-	static int getMeteoVariation();
 };
 

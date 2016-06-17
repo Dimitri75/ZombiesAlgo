@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "Question5.h"
-#include <algorithm>
-
 
 static Distance1 distanceMatrix[MAX][MAX];
 static Status statusList[MAX];
@@ -11,21 +9,18 @@ static int number;
 static Node nodeList[MAX];
 
 void Question5::proceed(){
+	read();
+	calcDistances();
+	setProblem(statusList);
+	setMatrix();
+	sortMatrix();
 
-	Question5::read();
-	Question5::calcDistances();
-
-	Question5::setProblem(statusList);
-	Question5::setMatrix();
-	Question5::sortMatrix();
 	for (int i = 1; i < MAX; i++){
-		Question5::findNeighbour(i);
+		findNeighbour(i);
 	}
 
-	cout << endl
-		<< "Le meilleur parcourt :"
-		<< endl;
-	Question5::findNeighbour(11);
+	cout << endl << "Best path :" << endl;
+	findNeighbour(11);
 }
 
 void Question5::read()
@@ -37,7 +32,7 @@ void Question5::read()
 		fileCity >> nodeList[i].index >> nodeList[i].xCoord >> nodeList[i].yCoord;
 	}
 
-	cout << "\n";
+	cout << endl;
 }
 
 
@@ -46,7 +41,6 @@ void Question5::calcDistances()
 	for (int i = 0; i < number; i++)
 	{
 		for (int j = 0; j < number; j++)
-
 		{
 			if (i == j)
 			{
@@ -70,8 +64,8 @@ int Question5::getNumber()
 }
 
 void Question5::setProblem(Status statusList[]){
-
-	for (int i = 0; i < MAX; i++){
+	for (int i = 0; i < MAX; i++)
+	{
 		statusList[i].index = i;
 		statusList[i].approched = 0;
 		statusList[i].fullDistance = 0;
@@ -87,13 +81,10 @@ void Question5::setMatrix()
 
 void Question5::sortMatrix()
 {
-
 	for (int i = 0; i < MAX; i++)
 	{
 		sort(distanceMatrix[i], distanceMatrix[i] + getNumber(), [](Distance1 const &a, Distance1 const &b) {
 		return a.next < b.next; });
-
-
 	}
 }
 void Question5::findNeighbour(int city)
@@ -105,8 +96,6 @@ void Question5::findNeighbour(int city)
 	int path[MAX];
 
 	int cityInit = city;
-
-
 
 	bool finished = false;
 	int indexAway = 0;
@@ -132,27 +121,16 @@ void Question5::findNeighbour(int city)
 	length += oldMatrix[city - 1][0];
 	indexAway++;
 
+	cout << "Path distance : " << length << " from the city " << cityInit << endl;
+	cout << endl << "Path :" << endl;
 
-
-
-	cout << "\n Cout du chemin d'approvisionnement : " << length << " a partir de la ville " << cityInit << "\n" << endl;
-
-
-	cout << "\n Chemin d'approvisionnement:\n ";
-
-
-	for (int i = 1; i < cityCount; i++)
-	{
+	for (int i = 1; i < cityCount; i++){
 		cout << path[i - 1];
 
 		if (i != cityCount - 1)
-		{
 			cout << " -> ";
-		}
 		else
-		{
 			cout << " -> " << cityInit << endl;
-
-		}
 	}
+	cout << "----------" << endl;
 }

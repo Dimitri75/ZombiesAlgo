@@ -25,9 +25,76 @@ void Question4::proceed(){
 	}
 	cout << endl;
 
-	for (auto it = takenPositions.begin(); it != takenPositions.end(); ++it){
+	routineChangePositions(map, takenPositions, distance);
+}
 
+void Question4::routineChangePositions(map<int, pair<double, int>> map, vector<int>& takenPositions, int distance){
+	int maxPosition;
+	int hour = 1;
+	vector<int> invalidPositions = takenPositions;
+	vector<int> positionsToErase;
+
+	bool again = wellPosted(map, takenPositions, distance);
+	while (!again) {
+		cout << "----- Hour : " << hour << " -----" << endl;
+		++hour;
+
+		// update the positions of the shooters who are below their estimation
+		positionsToErase.clear();
+		for (auto it = takenPositions.begin(); it != takenPositions.end(); ++it){
+			int percentageVariation = map[*it].second;
+
+			if (percentageVariation < 0){
+				cout << "Shooter at " << *it << " (" << map[*it].second << "%) left his position." << endl;
+				maxPosition = getMaxInCorrectDistanceAndApplyVariation(map, distance, invalidPositions);
+
+				invalidPositions.push_back(maxPosition);
+				positionsToErase.push_back(*it);
+
+				cout << "----------" << endl;
+			}
+		}
+
+		// Erase old positions
+		cout << endl;
+		for (auto it = positionsToErase.begin(); it != positionsToErase.end(); ++it){
+			auto itToErase = find(invalidPositions.begin(), invalidPositions.end(), *it);
+			invalidPositions.erase(itToErase);
+		}
+		takenPositions = invalidPositions;
+		again = wellPosted(map, takenPositions, distance);
+
+		// 5 seconds represents 1 hour
+		this_thread::sleep_for(std::chrono::seconds(5));
+
+		// update variations every 10 hour
+		if (hour % 10 == 0)
+			updateVariations(map);
 	}
+}
+
+void Question4::updateVariations(map<int, pair<double, int>> map){
+	int position, percentageVariation;
+	double estimation;
+	for (auto it = map.begin(); it != map.end(); ++it){
+		position = it->first;
+		estimation = it->second.first;
+		percentageVariation = it->second.second;
+		percentageVariation += Utils::getMeteoVariation();
+
+		map[position] = pair<double, int>(estimation, percentageVariation);
+	}
+}
+
+bool Question4::wellPosted(map<int, pair<double, int>> map, vector<int> takenPositions, int distance){
+	int maxPosition;
+	for (auto it = takenPositions.begin(); it != takenPositions.end(); ++it){
+		int percentageVariation = map[*it].second;
+
+		if (percentageVariation < 0)
+			return false;
+	}
+	return true;
 }
 
 int Question4::chooseDistance(){
@@ -55,7 +122,7 @@ int Question4::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, in
 			maxPair = efficiency > maxPair.second ? pair<int, double>(position, efficiency) : maxPair;
 		}
 	}
-	cout << endl << "Shooter at " << maxPair.first << " : " << maxPair.second << " (" << map[maxPair.first].second << "%)" << endl;
+	cout << endl << "Shooter  is posted at " << maxPair.first << " : " << maxPair.second << " (" << map[maxPair.first].second << "%)" << endl;
 	applyVariation(map, maxPair.first);
 
 	return maxPair.first;

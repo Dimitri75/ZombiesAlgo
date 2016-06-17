@@ -9,5 +9,8 @@ private:
 	static int chooseDistance();
 	static void applyVariation(map<int, pair<double, int>> map, double max);
 	static void updateTower(map<int, pair<double, int>>, map<int, pair<double, int>>::iterator&);
+	static bool wellPosted(map<int, pair<double, int>> map, vector<int> takenPositions, int distance);
+	static void routineChangePositions(map<int, pair<double, int>> map, vector<int>& takenPositions, int distance);
+	static void updateVariations(map<int, pair<double, int>> map);
 };
 
