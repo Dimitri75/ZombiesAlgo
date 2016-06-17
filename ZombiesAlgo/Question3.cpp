@@ -17,11 +17,11 @@ void Question3::proceed(){
 	int maxPosition;
 	double efficiency;
 	int distance = chooseDistance();
-	vector<int> distances;
+	vector<int> takenPositions;
 
 	for (int i = 1; i <= nbShooters; ++i){
-		maxPosition = getMaxInCorrectDistanceAndApplyVariation(map, distance, distances);
-		distances.push_back(maxPosition);
+		maxPosition = getMaxInCorrectDistanceAndApplyVariation(map, distance, takenPositions);
+		takenPositions.push_back(maxPosition);
 		cout << endl;
 	}
 }
@@ -36,14 +36,14 @@ int Question3::chooseDistance(){
 	return distance;
 }
 
-int Question3::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>> map, int minDistance, vector<int> distances){
+int Question3::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>> map, int minDistance, vector<int> takenPositions){
 	int maxPosition = map.begin()->first, position;
 
 	for (auto it = map.begin(); it != map.end(); ++it){
 		position = it->first;
 		pair<double, int> efficiencyAndVariation = it->second;
 
-		if (isDistanceOk(position, minDistance, distances))
+		if (isDistanceOk(position, minDistance, takenPositions))
 			maxPosition = efficiencyAndVariation.first > map[maxPosition].first ? position : maxPosition;
 	}
 	cout << endl << "Shooter at " << maxPosition << " : " << map[maxPosition].first << " (" << map[maxPosition].second << "%)" << endl;
@@ -78,11 +78,11 @@ void Question3::applyVariation(map<int, pair<double, int>> map, double maxPositi
 	}
 }
 
-bool Question3::isDistanceOk(int position, int minDistance, vector<int> distances){
-	for (auto distanceIt = distances.begin(); distanceIt != distances.end(); ++distanceIt){
-		if (position <= *distanceIt && *distanceIt - position < minDistance)
+bool Question3::isDistanceOk(int position, int minDistance, vector<int> takenPositions){
+	for (auto takenPositionsIt = takenPositions.begin(); takenPositionsIt != takenPositions.end(); ++takenPositionsIt){
+		if (position <= *takenPositionsIt && *takenPositionsIt - position < minDistance)
 			return false;
-		else if (position >= *distanceIt && position - *distanceIt < minDistance)
+		else if (position >= *takenPositionsIt && position - *takenPositionsIt < minDistance)
 			return false;
 	}
 	return true;

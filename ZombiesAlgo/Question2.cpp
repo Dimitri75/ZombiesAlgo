@@ -18,12 +18,12 @@ void Question2::proceed(){
 
 	int maxPosition;
 	int efficiency;
-	vector<int> distances;
+	vector<int> takenPositions;
 	for (int i = 1; i <= nbShooters; ++i){
-		maxPosition = getMaxInCorrectDistance(map, distance, distances);
+		maxPosition = getMaxInCorrectDistance(map, distance, takenPositions);
 		efficiency = map[maxPosition];
 		cout << "Shooter " << i << " at " << maxPosition << " (" << efficiency << ")" << endl;
-		distances.push_back(maxPosition);
+		takenPositions.push_back(maxPosition);
 	}
 }
 
@@ -37,25 +37,25 @@ int Question2::chooseDistance(){
 	return distance;	
 }
 
-int Question2::getMaxInCorrectDistance(map<int, int> map, int minDistance, vector<int> distances){
+int Question2::getMaxInCorrectDistance(map<int, int> map, int minDistance, vector<int> takenPositions){
 	int maxPosition = map.begin()->first, position, efficiency;
 
 	for (auto it = map.begin(); it != map.end(); ++it){
 		position = it->first;
 		efficiency = it->second;
 
-		if (isDistanceOk(position, minDistance, distances))
+		if (isDistanceOk(position, minDistance, takenPositions))
 			maxPosition = efficiency > map[maxPosition] ? position : maxPosition;
 	}
 
 	return maxPosition;
 }
 
-bool Question2::isDistanceOk(int position, int minDistance, vector<int> distances){
-	for (auto distanceIt = distances.begin(); distanceIt != distances.end(); ++distanceIt){
-		if (position <= *distanceIt && (*distanceIt - position < minDistance))
+bool Question2::isDistanceOk(int position, int minDistance, vector<int> takenPositions){
+	for (auto takenPositionsIt = takenPositions.begin(); takenPositionsIt != takenPositions.end(); ++takenPositionsIt){
+		if (position <= *takenPositionsIt && *takenPositionsIt - position < minDistance)
 			return false;
-		else if (position >= *distanceIt && (position - *distanceIt < minDistance))
+		else if (position >= *takenPositionsIt && position - *takenPositionsIt < minDistance)
 			return false;
 	}
 	return true;

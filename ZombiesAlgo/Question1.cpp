@@ -4,15 +4,15 @@
 void Question1::proceed(){
 	ifstream file = Utils::chooseFile();
 
-	vector<int> list = Utils::parseFileIntoVector(file);
+	vector<int> vector = Utils::parseFileIntoVector(file);
 
-	int nbShooters = list.at(0);
-	list.erase(list.begin());
+	int nbShooters = vector.at(0);
+	vector.erase(vector.begin());
 
-	int nbTowers = list.at(0);
-	list.erase(list.begin());
+	int nbTowers = vector.at(0);
+	vector.erase(vector.begin());
 
-	map<int, int> map = Utils::parseVectorIntoMap(list);
+	map<int, int> map = Utils::parseVectorIntoMap(vector);
 
 	int max;
 	int bestPosition;

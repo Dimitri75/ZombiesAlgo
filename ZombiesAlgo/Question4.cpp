@@ -16,14 +16,18 @@ void Question4::proceed(){
 
 	int maxPosition;
 	int distance = chooseDistance();
-	vector<int> distances;
+	vector<int> takenPositions;
 
 	for (int i = 1; i <= nbShooters; ++i){
-		maxPosition = getMaxInCorrectDistanceAndApplyVariation(map, distance, distances);
-		distances.push_back(maxPosition);
+		maxPosition = getMaxInCorrectDistanceAndApplyVariation(map, distance, takenPositions);
+		takenPositions.push_back(maxPosition);
 		cout << endl;
 	}
 	cout << endl;
+
+	for (auto it = takenPositions.begin(); it != takenPositions.end(); ++it){
+
+	}
 }
 
 int Question4::chooseDistance(){
@@ -36,7 +40,7 @@ int Question4::chooseDistance(){
 	return distance;
 }
 
-int Question4::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>> map, int minDistance, vector<int> distances){
+int Question4::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, int>> map, int minDistance, vector<int> takenPositions){
 	pair<int, double> maxPair = pair<int, double>(map.begin()->first, map.begin()->second.first * ((100 + map.begin()->second.second) / 100));
 	int position;
 	double variation, efficiency;
@@ -47,7 +51,7 @@ int Question4::getMaxInCorrectDistanceAndApplyVariation(map<int, pair<double, in
 		variation = (100 + estimationAndVariation.second) / 100;
 		efficiency = estimationAndVariation.first * variation;
 
-		if (isDistanceOk(position, minDistance, distances)){
+		if (isDistanceOk(position, minDistance, takenPositions)){
 			maxPair = efficiency > maxPair.second ? pair<int, double>(position, efficiency) : maxPair;
 		}
 	}
@@ -84,11 +88,11 @@ void Question4::applyVariation(map<int, pair<double, int>> map, double maxPositi
 	}
 }
 
-bool Question4::isDistanceOk(int position, int minDistance, vector<int> distances){
-	for (auto distanceIt = distances.begin(); distanceIt != distances.end(); ++distanceIt){
-		if (position <= *distanceIt && *distanceIt - position < minDistance)
+bool Question4::isDistanceOk(int position, int minDistance, vector<int> takenPositions){
+	for (auto takenPositionsIt = takenPositions.begin(); takenPositionsIt != takenPositions.end(); ++takenPositionsIt){
+		if (position <= *takenPositionsIt && *takenPositionsIt - position < minDistance)
 			return false;
-		else if (position >= *distanceIt && position - *distanceIt < minDistance)
+		else if (position >= *takenPositionsIt && position - *takenPositionsIt < minDistance)
 			return false;
 	}
 	return true;
