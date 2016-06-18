@@ -9,9 +9,7 @@ class Question6
 {
 public:
 	static void proceed();
-
 private:
-	
 	static string decryptionXOR(string, string);
 	static string encryptionXOR(string, string);
 	static void xor();
