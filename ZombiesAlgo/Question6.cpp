@@ -7,14 +7,12 @@
 #include "stdafx.h"
 #include "Question6.h"
 
-void Question6::proceed(){
+const string constKey = "iqbgiubqegibqeibgqerig";
 
-	displayChooseAlgorithm();
-	int x;
-	cout << endl;
-	cin >> x;
-	cout << endl;
-	switch (x)
+void Question6::proceed(){
+	int choice = chooseAlgorithm();
+
+	switch (choice)
 	{
 	case 1:
 		ceasar();
@@ -30,138 +28,112 @@ void Question6::proceed(){
 	}
 }
 
-void Question6::ceasar(){
+int Question6::chooseAlgorithm()
+{
+	int choice;
+
+	cout << endl << "Choix de l'algorithme d'encryption" << endl <<
+		"1 - Ceasar" << endl <<
+		"2 - Vigenere " << endl <<
+		"3 - XOR" << endl;
 	
-	string messageEncrypt;
-	cout << "Message a encrypte" << endl;
+	cin >> choice;
+	return choice;
+}
+
+string Question6::getMessage(){
+	string messageToEncrypt;
+	cout << "Type a message to encrypt : " << endl;
 	cin.ignore();
-	getline(cin, messageEncrypt);
-	string output;
-	for (int x = 0; x < messageEncrypt.length(); x++)
-	{
-		output += encryptionCeasar(messageEncrypt[x]);
-	}
-	cout << endl << output << endl;
-	string de;
-	for (int x = 0; x < output.length(); x++)
-	{
-		de += decryptionCeasar(output[x]);
-	}
-	cout << endl << de << endl;
+	getline(cin, messageToEncrypt);
+	cout << endl;
 
+	return messageToEncrypt;
 }
 
-char Question6::encryptionCeasar(char c)
+void Question6::ceasar(){
+	string messageToEncrypt = getMessage();
+
+	string encryptedMessage = encryptionCeasar(messageToEncrypt);
+	cout << endl << "Encrypted message is : " << encryptedMessage << endl;
+
+	string decryptedMessage = decryptionCeasar(encryptedMessage);
+	cout << "Decrypted message is : " << decryptedMessage << endl;
+}
+
+string Question6::encryptionCeasar(string msg)
 {
+	string encryptedMessage;
+	for (int i = 0; i < msg.length(); ++i)
+		encryptedMessage += msg[i] - 10;
 
-	c = c - 10;
-	return c;
+	return encryptedMessage;
 }
 
-char Question6::decryptionCeasar(char c)
+string Question6::decryptionCeasar(string msg)
 {
+	string decryptedMessage;
+	for (int i = 0; i < msg.length(); ++i)
+		decryptedMessage += msg[i] + 10;
 
-	c = c + 10;
-	return c;
-	
+	return decryptedMessage;
 }
-
 
 void Question6::vigenere()
 {
-	
-	string cle = "algo";
-	
-	string messageEncrypt;
-	cout << "Message a encrypte : " << endl;
-	cin.ignore();
-	getline(cin, messageEncrypt);
-	
-	string message = encryptionVigenere(messageEncrypt, cle);
-	cout << "le message encrypte devient : " << message << endl;
-	string messageDecrypt = decryptionVigenere(message, cle);
-	cout << "le message clair est " << messageDecrypt << endl;
-	
+	string messageToEncrypt = getMessage();
+
+	string encryptedMessage = encryptionVigenere(messageToEncrypt, constKey);
+	cout << endl << "Encrypted message is : " << encryptedMessage << endl;
+
+	string decryptedMessage = decryptionVigenere(encryptedMessage, constKey);
+	cout << "Decrypted message is : " << decryptedMessage << endl;
 }
 
-string Question6::encryptionVigenere(string text, string cle){
-
-	string res = "";
-	string key = gestionCle(cle);
-
-	for (int i = 0, j = 0; i < text.length(); i++){
-		char c = text[i];
-		if (c >= 'A' && c <= 'Z')
-		{
-			res += ((c + key[j] - 2 * 'A') % 26 + 'A');
-			j = (j + 1) % key.length();
-
-		}
-		else if (c >= 'a' && c <= 'z')
-		{
-			res += ((c + key[j] - 2 * 'a') % 26 + 'a');
-			j = (j + 1) % key.length();
-		}
-
-	}
-	return res;
-}
-
-string Question6::gestionCle(string cle)
+string Question6::encryptionVigenere(string msg, string key)
 {
-
-	string key = "";
-	
-		for (int i = 0; i < cle.length(); i++) {
-		char c = cle[i];
-		if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
-			key = key + c;
-			
+	transform(msg.begin(), msg.end(), msg.begin(), ::tolower);
+	transform(key.begin(), key.end(), key.begin(), ::tolower);
+	unsigned int j = 0;
+	for (int i = 0; i < msg.length(); i++)
+	{
+		if (isalpha(msg[i]))
+		{
+			msg[i] += key[j] - 'a';
+			if (msg[i] > 'z') msg[i] += -'z' + 'a' - 1;
 		}
-		
+		j = j + 1 == key.length() ? 0 : j + 1;
 	}
-	return key;
-	
-		
+	return msg;
 }
 
-string Question6::decryptionVigenere(string text, string cle) {
-	string res = "";
-
-	string key = gestionCle(cle);
-
-	for (int i = 0, j = 0; i < text.length(); i++) {
-		char c = text[i];
-
-		if (c >= 'A' && c <= 'Z')
+string Question6::decryptionVigenere(string msg, string key)
+{
+	transform(msg.begin(), msg.end(), msg.begin(), ::tolower);
+	transform(key.begin(), key.end(), key.begin(), ::tolower);
+	unsigned int j = 0;
+	for (int i = 0; i < msg.length(); i++)
+	{
+		if (isalpha(msg[i]))
 		{
-			res += ((c - key[j] + 26 - 2 * 'A') % 26 + 'A');
-			j = (j + 1) % key.length();
-
-
+			msg[i] = msg[i] >= key[j] ?
+				msg[i] - key[j] + 'a' :
+				'a' + ('z' - key[j] + msg[i] - 'a') + 1;
 		}
-		else if (c >= 'a' && c <= 'z')
-		{
-			res += ((c - key[j] + 26) % 26 + 'a');
-			j = (j + 1) % key.length();
-		}
+		j = j + 1 == key.length() ? 0 : j + 1;
 	}
-	return res;
+	return msg;
 }
 
 void Question6::xor()
 {
-	
-	string messageUncrypt;
-	string messageEncrypt;
-	cout << endl << "Votre message a encrypter" << endl;
-	cin.ignore();
-	getline(cin, messageEncrypt);
-	cout << endl;
-	string message = encryptionXOR(messageEncrypt, "ras");
-	cout << "Message encrypte : " << message << endl;
-	
-	cout << "Message decrypte : " << decryptionXOR(message, "ras");
+	string messageToEncrypt = getMessage();
+
+	string encryptedMessage = encryptionXOR(messageToEncrypt, constKey);
+	cout << endl << "Encrypted message is : " << encryptedMessage << endl;
+
+	string decryptedMessage = decryptionXOR(encryptedMessage, constKey);
+	cout << "Decrypted message is : " << decryptedMessage << endl;
 }
 
 
@@ -169,6 +141,7 @@ string Question6::encryptionXOR(string msg, string key)
 {
 	for (string::size_type i = 0; i < msg.size(); ++i)
 		 msg[i] = msg[i] ^ key[i % (sizeof(key) / sizeof(key))];
+
 	return msg;
 }
 
@@ -177,10 +150,4 @@ string Question6::decryptionXOR(string msg, string key)
 	return encryptionXOR(msg, key);
 }
 
-void Question6::displayChooseAlgorithm()
-{
-	
-	cout << endl << "Choix de l'algorithme d'encryption" << endl;
-	cout << "1 - Ceasar" << endl << "2 - Vigenere " << endl << "3 - XOR";
-	
-}
+
