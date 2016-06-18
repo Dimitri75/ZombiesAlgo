@@ -104,15 +104,8 @@ string Question6::encryptionVigenere(string msg, string key)
 
 			if (msg[i] > 'z') 
 				msg[i] += -'z' + 'a' - 1;
-
-			if (j < key.length() - 1){
-				j = j + 1;
-			}
-			else{
-				j = 0;
-			}
 		}
-		
+		j = (j == (key.size() - 1)) ? 0 : j + 1;
 	}
 	return msg;
 }
@@ -128,15 +121,9 @@ string Question6::decryptionVigenere(string msg, string key)
 				msg[i] = msg[i] - key[j] + 'a';
 			else
 				msg[i] = 'a' + ('z' - key[j] + msg[i] - 'a') + 1;
-			
 		}
 
-		if (j < key.length() - 1){
-			j = j + 1;
-		}
-		else{
-			j = 0;
-		}
+		j = (j == (key.size() - 1)) ? 0 : j + 1;
 	}
 	return msg;
 }
