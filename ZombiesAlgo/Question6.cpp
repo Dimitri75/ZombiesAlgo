@@ -7,7 +7,7 @@
 #include "stdafx.h"
 #include "Question6.h"
 
-const string constKey = "iqbgiubqegibqeibgqerig";
+static string constKey = "iqbgiubqegibqeibgqerig";
 
 void Question6::proceed(){
 	int choice = chooseAlgorithm();
@@ -94,33 +94,36 @@ string Question6::encryptionVigenere(string msg, string key)
 {
 	transform(msg.begin(), msg.end(), msg.begin(), ::tolower);
 	transform(key.begin(), key.end(), key.begin(), ::tolower);
+
 	unsigned int j = 0;
 	for (int i = 0; i < msg.length(); i++)
 	{
 		if (isalpha(msg[i]))
 		{
 			msg[i] += key[j] - 'a';
-			if (msg[i] > 'z') msg[i] += -'z' + 'a' - 1;
+
+			if (msg[i] > 'z') 
+				msg[i] += -'z' + 'a' - 1;
 		}
-		j = j + 1 == key.length() ? 0 : j + 1;
+		j = (j == (key.size() - 1)) ? 0 : j + 1;
 	}
 	return msg;
 }
 
 string Question6::decryptionVigenere(string msg, string key)
 {
-	transform(msg.begin(), msg.end(), msg.begin(), ::tolower);
-	transform(key.begin(), key.end(), key.begin(), ::tolower);
 	unsigned int j = 0;
 	for (int i = 0; i < msg.length(); i++)
 	{
 		if (isalpha(msg[i]))
 		{
-			msg[i] = msg[i] >= key[j] ?
-				msg[i] - key[j] + 'a' :
-				'a' + ('z' - key[j] + msg[i] - 'a') + 1;
+			if (msg[i] >= key[j])
+				msg[i] = msg[i] - key[j] + 'a';
+			else
+				msg[i] = 'a' + ('z' - key[j] + msg[i] - 'a') + 1;
 		}
-		j = j + 1 == key.length() ? 0 : j + 1;
+
+		j = (j == (key.size() - 1)) ? 0 : j + 1;
 	}
 	return msg;
 }
