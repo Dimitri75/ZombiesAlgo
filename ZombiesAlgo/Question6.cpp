@@ -1,60 +1,186 @@
+/*
+*Question 6 du devoir 2
+*Réalisé par Dimitri BUHON, Noel SOBCZAK et Céline CARLES
+*Ce fichier permet de coder nos messages par différents algorithmes
+*/
+
 #include "stdafx.h"
 #include "Question6.h"
 
 void Question6::proceed(){
-	/*
-	Vos services de renseignement ont pu déterminer la source du virus. 
-	En effet, des entités extraterrestres ont pu propager ce virus dans le but de réduire la planète à l’esclavage. 
-	Vous êtes sur le point de découvrir leur laboratoires et usines de production. 
-	Vous souhaitez sécurisez vos échanges d’informations.
-	Il vous est demandé de mettre en place un système qui permettra de sécuriser vos échanges de messages.
-	*/
 
-	string key = "jhgyufzzzzzkyfluyghy";
-
-	string message = "Hello world";
-	cout << "Message : " << message << endl;
-
-	string encryptedMessage = vigenereEncryption(message, key);
-	cout << "Encrypted message : " << encryptedMessage << endl;
-
-	string decryptedMessage = vigenereDecryption(encryptedMessage, key);
-	cout << "Decrypted message : " << decryptedMessage << endl;
-
-	// TODO : perhaps should we do something better than vigenere ? :x
+	displayChooseAlgorithm();
+	int x;
+	cout << endl;
+	cin >> x;
+	cout << endl;
+	switch (x)
+	{
+	case 1:
+		ceasar();
+		break;
+	case 2:
+		vigenere();
+		break;
+	case 3:
+		xor();
+		break;
+	default:
+		break;
+	}
 }
 
-string Question6::vigenereEncryption(string msg, string key)
-{
-	std::transform(msg.begin(), msg.end(), msg.begin(), ::toupper);
-	std::transform(key.begin(), key.end(), key.begin(), ::toupper);
-	unsigned int j = 0;
-	for (int i = 0; i < msg.length(); i++)
+void Question6::ceasar(){
+	
+	string messageEncrypt;
+	cout << "Message a encrypte" << endl;
+	cin.ignore();
+	getline(cin, messageEncrypt);
+	string output;
+	for (int x = 0; x < messageEncrypt.length(); x++)
 	{
-		if (isalpha(msg[i]))
-		{
-			msg[i] += key[j] - 'A';
-			if (msg[i] > 'Z') msg[i] += -'Z' + 'A' - 1;
-		}
-		j = j + 1 == key.length() ? 0 : j + 1;
+		output += encryptionCeasar(messageEncrypt[x]);
 	}
+	cout << endl << output << endl;
+	string de;
+	for (int x = 0; x < output.length(); x++)
+	{
+		de += decryptionCeasar(output[x]);
+	}
+	cout << endl << de << endl;
+
+}
+
+char Question6::encryptionCeasar(char c)
+{
+
+	c = c - 10;
+	return c;
+}
+
+char Question6::decryptionCeasar(char c)
+{
+
+	c = c + 10;
+	return c;
+	
+}
+
+
+void Question6::vigenere()
+{
+	
+	string cle = "algo";
+	
+	string messageEncrypt;
+	cout << "Message a encrypte : " << endl;
+	cin.ignore();
+	getline(cin, messageEncrypt);
+	
+	string message = encryptionVigenere(messageEncrypt, cle);
+	cout << "le message encrypte devient : " << message << endl;
+	string messageDecrypt = decryptionVigenere(message, cle);
+	cout << "le message clair est " << messageDecrypt << endl;
+	
+}
+
+string Question6::encryptionVigenere(string text, string cle){
+
+	string res = "";
+	string key = gestionCle(cle);
+
+	for (int i = 0, j = 0; i < text.length(); i++){
+		char c = text[i];
+		if (c >= 'A' && c <= 'Z')
+		{
+			res += ((c + key[j] - 2 * 'A') % 26 + 'A');
+			j = (j + 1) % key.length();
+
+		}
+		else if (c >= 'a' && c <= 'z')
+		{
+			res += ((c + key[j] - 2 * 'a') % 26 + 'a');
+			j = (j + 1) % key.length();
+		}
+
+	}
+	return res;
+}
+
+string Question6::gestionCle(string cle)
+{
+
+	string key = "";
+	
+		for (int i = 0; i < cle.length(); i++) {
+		char c = cle[i];
+		if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
+			key = key + c;
+			
+		}
+		
+	}
+	return key;
+	
+		
+}
+
+string Question6::decryptionVigenere(string text, string cle) {
+	string res = "";
+
+	string key = gestionCle(cle);
+
+	for (int i = 0, j = 0; i < text.length(); i++) {
+		char c = text[i];
+
+		if (c >= 'A' && c <= 'Z')
+		{
+			res += ((c - key[j] + 26 - 2 * 'A') % 26 + 'A');
+			j = (j + 1) % key.length();
+
+
+		}
+		else if (c >= 'a' && c <= 'z')
+		{
+			res += ((c - key[j] + 26) % 26 + 'a');
+			j = (j + 1) % key.length();
+		}
+	}
+	return res;
+}
+
+void Question6::xor()
+{
+	
+	string messageUncrypt;
+	string messageEncrypt;
+	cout << endl << "Votre message a encrypter" << endl;
+	cin.ignore();
+	getline(cin, messageEncrypt);
+	cout << endl;
+	string message = encryptionXOR(messageEncrypt, "ras");
+	cout << "Message encrypte : " << message << endl;
+	
+	cout << "Message decrypte : " << decryptionXOR(message, "ras");
+}
+
+
+string Question6::encryptionXOR(string msg, string key)
+{
+	for (string::size_type i = 0; i < msg.size(); ++i)
+		 msg[i] = msg[i] ^ key[i % (sizeof(key) / sizeof(key))];
 	return msg;
 }
 
-string Question6::vigenereDecryption(string msg, string key)
+string Question6::decryptionXOR(string msg, string key)
 {
-	std::transform(msg.begin(), msg.end(), msg.begin(), ::toupper);
-	std::transform(key.begin(), key.end(), key.begin(), ::toupper);
-	unsigned int j = 0;
-	for (int i = 0; i < msg.length(); i++)
-	{
-		if (isalpha(msg[i]))
-		{
-			msg[i] = msg[i] >= key[j] ?
-				msg[i] - key[j] + 'A' :
-				'A' + ('Z' - key[j] + msg[i] - 'A') + 1;
-		}
-		j = j + 1 == key.length() ? 0 : j + 1;
-	}
-	return msg;
+	return encryptionXOR(msg, key);
+}
+
+void Question6::displayChooseAlgorithm()
+{
+	
+	cout << endl << "Choix de l'algorithme d'encryption" << endl;
+	cout << "1 - Ceasar" << endl << "2 - Vigenere " << endl << "3 - XOR";
+	
 }
