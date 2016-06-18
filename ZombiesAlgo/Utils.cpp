@@ -90,7 +90,7 @@ map<int, pair<double, int>> Utils::parseVectorIntoMapWithMeteo(vector<int>& vect
 	return map;
 }
 
-// Return a map< <position, estimation>, <efficiency, variation>>
+// Return a map< <position, <estimation, variation>>
 map<int, pair<double, int>> Utils::parseVectorIntoMapWithMeteoAndKeepEstimation(vector<int>& vector){
 	map<int, pair<double, int>> map;
 	int position, estimation;

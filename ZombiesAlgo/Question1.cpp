@@ -14,23 +14,23 @@ void Question1::proceed(){
 
 	map<int, int> map = Utils::parseVectorIntoMap(vector);
 
-	int max;
-	int bestPosition;
+	int maxKey;
+	int estimation;
 	for (int i = 1; i <= nbShooters; ++i){
-		max = getMax(map);
-		bestPosition = map[max];
-		cout << "Shooter " << i << " at " << bestPosition << " (" << max << ")" << endl;
-		map.erase(max);
+		maxKey = getMax(map);
+		estimation = map[maxKey];
+		cout << "Shooter " << i << " at " << maxKey << " (" << estimation << ")" << endl;
+		map.erase(maxKey);
 	}
 }
 
 int Question1::getMax(map<int, int> map){
-	int max = 0;
+	int maxKey = map.begin()->first;
 
 	for (auto it = map.begin(); it != map.end(); ++it)
-		max = it->first > max ? it->first : max;
+		maxKey = it->second > map[maxKey] ? it->first : maxKey;
 
-	return max;
+	return maxKey;
 }
 
 
