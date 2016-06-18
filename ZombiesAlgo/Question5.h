@@ -1,3 +1,9 @@
+/*
+*Question 5 du devoir 2
+*Réalisé par Dimitri BUHON, Noel SOBCZAK et Céline CARLES
+*Ce fichier permet d'approvisionner toutes les tours en commançant par le meilleur point de début
+*/
+
 #pragma once
 #define MAX 38
 
