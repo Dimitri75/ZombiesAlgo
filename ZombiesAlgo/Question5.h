@@ -43,7 +43,6 @@ public:
 private:	
 	static void read();
 	static void calcDistances();
-	static double ** getDistanceMatrix();
 	static int getNumber();
 	static void setProblem(Status statusList[]);
 	static void setMatrix();
