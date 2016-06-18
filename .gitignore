@@ -48,3 +48,4 @@ Temporary Items
 ZombiesAlgo/Debug/*
 ZombiesAlgo.opensdf
 ZombiesAlgo.sdf
+*.ipch
