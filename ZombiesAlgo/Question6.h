@@ -13,8 +13,8 @@ private:
 	static string decryptionXOR(string, string);
 	static string encryptionXOR(string, string);
 	static void xor();
-	static string decryptionVigenere(string, string);
-	static string encryptionVigenere(string, string);
+	static string decryptionVigenere(string&, string&);
+	static string encryptionVigenere(string&, string&);
 	static void vigenere();
 	static string decryptionCeasar(string);
 	static string encryptionCeasar(string);

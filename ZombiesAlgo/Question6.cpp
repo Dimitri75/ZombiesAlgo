@@ -7,7 +7,7 @@
 #include "stdafx.h"
 #include "Question6.h"
 
-static string constKey = "iqbgiubqegibqeibgqerig";
+static string globalKey = "izabfiuazbaifzbuaizufb";
 
 void Question6::proceed(){
 	int choice = chooseAlgorithm();
@@ -51,6 +51,10 @@ string Question6::getMessage(){
 	return messageToEncrypt;
 }
 
+
+
+
+
 void Question6::ceasar(){
 	string messageToEncrypt = getMessage();
 
@@ -79,63 +83,71 @@ string Question6::decryptionCeasar(string msg)
 	return decryptedMessage;
 }
 
+
+
+
+
 void Question6::vigenere()
 {
 	string messageToEncrypt = getMessage();
 
-	string encryptedMessage = encryptionVigenere(messageToEncrypt, constKey);
+	string encryptedMessage = encryptionVigenere(messageToEncrypt, globalKey);
 	cout << endl << "Encrypted message is : " << encryptedMessage << endl;
 
-	string decryptedMessage = decryptionVigenere(encryptedMessage, constKey);
+	string decryptedMessage = decryptionVigenere(encryptedMessage, globalKey);
 	cout << "Decrypted message is : " << decryptedMessage << endl;
 }
 
-string Question6::encryptionVigenere(string msg, string key)
-{
-	transform(msg.begin(), msg.end(), msg.begin(), ::tolower);
-	transform(key.begin(), key.end(), key.begin(), ::tolower);
+string Question6::encryptionVigenere(string& message, string& key){
+	transform(message.begin(), message.end(), message.begin(), tolower);
+	transform(key.begin(), key.end(), key.begin(), tolower);
 
-	unsigned int j = 0;
-	for (int i = 0; i < msg.length(); i++)
-	{
-		if (isalpha(msg[i]))
-		{
-			msg[i] += key[j] - 'a';
+	string encryptedMessage;
+	unsigned int i, j, ch;
+	for (i = 0, j = 0; i < message.length(); ++i, ++j) {
+		if (j >= key.length())
+			j = 0;
 
-			if (msg[i] > 'z') 
-				msg[i] += -'z' + 'a' - 1;
-		}
-		j = (j == (key.size() - 1)) ? 0 : j + 1;
+		if (message[i] >= 'a' && message[i] <= 'z')
+			ch = ((message[i] - 'a') + (key[j] - 'a')) % 26;
+		else
+			ch = message[i] - 'a';
+
+		encryptedMessage.append(string(1, (char)(ch + 'a')));
 	}
-	return msg;
+	return encryptedMessage;
 }
 
-string Question6::decryptionVigenere(string msg, string key)
-{
-	unsigned int j = 0;
-	for (int i = 0; i < msg.length(); i++)
-	{
-		if (isalpha(msg[i]))
-		{
-			if (msg[i] >= key[j])
-				msg[i] = msg[i] - key[j] + 'a';
-			else
-				msg[i] = 'a' + ('z' - key[j] + msg[i] - 'a') + 1;
-		}
+string Question6::decryptionVigenere(string& encryptedMessage, string& key){
+	string decryptedMessage;
 
-		j = (j == (key.size() - 1)) ? 0 : j + 1;
+	unsigned int i, j, ch;
+	for (i = 0, j = 0; i < encryptedMessage.length(); ++i, ++j) {
+		if (j >= key.length())
+			j = 0;
+
+		if (encryptedMessage[i] >= 'a' && encryptedMessage[i] <= 'z')
+			ch = ((encryptedMessage[i] - 'a') + 26 - (key[j] - 'a')) % 26;
+		else
+			ch = encryptedMessage[i] - 'a';
+
+		decryptedMessage.append(string(1, (char)(ch + 'a')));
 	}
-	return msg;
+	return decryptedMessage;
 }
+
+
+
+
 
 void Question6::xor()
 {
 	string messageToEncrypt = getMessage();
 
-	string encryptedMessage = encryptionXOR(messageToEncrypt, constKey);
+	string encryptedMessage = encryptionXOR(messageToEncrypt, globalKey);
 	cout << endl << "Encrypted message is : " << encryptedMessage << endl;
 
-	string decryptedMessage = decryptionXOR(encryptedMessage, constKey);
+	string decryptedMessage = decryptionXOR(encryptedMessage, globalKey);
 	cout << "Decrypted message is : " << decryptedMessage << endl;
 }
 
